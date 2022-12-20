@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System.ComponentModel.DataAnnotations;
 
 namespace DropdownSample.Models
 {
@@ -18,5 +19,8 @@ namespace DropdownSample.Models
         public string? Category { get; set; }
 
         public int UserId { get; set; }
+
+        public SelectList Categories { get; set; }
+        public SelectList Users { get; set; }
     }
 }
