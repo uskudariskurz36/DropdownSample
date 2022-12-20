@@ -72,5 +72,60 @@ namespace DropdownSample.Controllers
             // Model valid değilse;
             return View(model);
         }
+
+
+
+
+        public IActionResult Create2()
+        {
+            CreateExpenseModel2 model = new CreateExpenseModel2();
+            LoadViewData();
+
+            return View(model);
+        }
+
+        private void LoadViewData()
+        {
+            List<string> categories = new List<string>();
+            categories.Add("Akaryakıt");
+            categories.Add("Gıda");
+            categories.Add("Giyim");
+            categories.Add("Ofis");
+
+            ViewData["Categories"] = new SelectList(categories);
+
+            DatabaseContext db = new DatabaseContext();
+            List<User> users = db.Users.ToList();
+
+            ViewData["Users"] = new SelectList(users, "Id", "Username");
+        }
+
+        [HttpPost]
+        public IActionResult Create2(CreateExpenseModel2 model)
+        {
+            if (ModelState.IsValid)
+            {
+                Expense expense = new Expense
+                {
+                    Title = model.Title,
+                    Description = model.Description,
+                    Date = model.Date,
+                    Amount = model.Amount,
+                    Category = model.Category,
+                    UserId = model.UserId
+                };
+
+                DatabaseContext db = new DatabaseContext();
+                db.Expenses.Add(expense);
+                db.SaveChanges();
+
+                return RedirectToAction("Index");
+            }
+
+            LoadViewData();
+
+            // Model valid değilse;
+            return View(model);
+        }
     }
 }
